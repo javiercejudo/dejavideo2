@@ -1,4 +1,6 @@
-# dejavideo
+# dejavideo2
+
+_Work in progress_
 
 Stream your own videos easily, either on your private network or to the
 world using HTML5 video. I use the app to share all my videos from my main
