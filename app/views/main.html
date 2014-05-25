@@ -13,6 +13,14 @@
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
   </p>
+  <div class="quote" ng-show="randomQuote.enabled">
+    <p class="text">
+      "{{ randomQuote.text }}"
+    </p>
+    <p class="author">
+      -- {{ randomQuote.author }}
+    </p>
+  </div>
   <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
 </div>
 
