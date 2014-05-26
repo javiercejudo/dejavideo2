@@ -1,31 +1,45 @@
-var express = require('express');
-var app = express();
+var
+  fs = require('fs'),
+  express = require('express'),
+  app = express(),
+  APP_URL = '/app',
+  API_URL = '/api',
+  VIDEOS_URL = APP_URL + '/videos';
 
-app.use(express.static(__dirname + '/app'));
-
-var API_URL = '/api';
-
-var quotes = [
-  { author : 'Audrey Hepburn', text : "Nothing is impossible, the word itself says 'I'm possible'!"},
-  { author : 'Walt Disney', text : "You may not realize it when it happens, but a kick in the teeth may be the best thing in the world for you"},
-  { author : 'Unknown', text : "Even the greatest was once a beginner. Don't be afraid to take that first step."},
-  { author : 'Neale Donald Walsch', text : "You are afraid to die, and you're afraid to live. What a way to exist."}
-];
-
-app.all(API_URL, function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
- });
+app.use(express.static(__dirname + APP_URL));
 
 app.get(API_URL, function(req, res, next) {
-    res.json(quotes);
+  res.json({});
 });
 
-app.get(API_URL + '/quote/random', function(req, res, next) {
-  var id = Math.floor(Math.random() * quotes.length);
-  var q = quotes[id];
-  res.json(q);
+app.get(API_URL + '/files', function(req, res, next) {
+  var files = fs.readdirSync('.' + VIDEOS_URL);
+
+  res.json({ success: true, files: files });
 });
 
-app.listen(process.env.PORT || 8000);
+app.get(API_URL + '/files/:path', function(req, res, next) {
+  var
+    path = req.params.path,
+    files = [];
+
+  if (path.indexOf('..') > -1) {
+    return res.json({ success: false, error: '../ is not allowed' });
+  }
+
+  try {
+    files = fs.readdirSync('.' + VIDEOS_URL  + '/' + req.params.path);
+  } catch (e) {
+    return res.json({
+      success: false,
+      error: 'The directory ' + req.params.path + ' doesn\'t exist'
+    });
+  }
+
+  res.json({
+    success: true,
+    files: files
+  });
+});
+
+app.listen(process.env.PORT || 5000);
