@@ -8,10 +8,14 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'views/tree.html',
         controller: 'MainCtrl'
       })
-      .otherwise({
-        redirectTo: '/'
+      .when('/path/:path', {
+        templateUrl: 'views/tree.html',
+        controller: 'MainCtrl'
       });
-  });
+  })
+  .constant('TREE_DEPTH', -2)
+  .constant('URL_API', 'api')
+  .constant('URL_VIDEOS', 'videos');

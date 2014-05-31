@@ -1,5 +1,6 @@
 var
   fs = require('fs'),
+  util = require('util'),
   express = require('express'),
   app = express(),
   APP_URL = '/app',
@@ -21,25 +22,40 @@ app.get(API_URL + '/files', function(req, res, next) {
 app.get(API_URL + '/files/:path', function(req, res, next) {
   var
     path = req.params.path,
-    files = [];
+    files = [],
+    dir;
 
   if (path.indexOf('..') > -1) {
     return res.json({ success: false, error: '../ is not allowed' });
   }
 
+  dir = '.' + APP_URL  + '/' + req.params.path;
+
   try {
-    files = fs.readdirSync('.' + VIDEOS_URL  + '/' + req.params.path);
+    files = fs.readdirSync(dir)
+      .map(function(name) {
+        var stats = fs.statSync(dir + '/' + name);
+
+        return {
+          name: name,
+          isDir: stats.isDirectory()
+        };
+      })
+      .filter(function (file) {
+        var acceptedExtensions = ['mp4', 'ogv', 'webm', 'avi', 'wmv'];
+
+        return (
+          file.name.charAt(0) !== '.' &&
+          (file.isDir || acceptedExtensions.indexOf(file.name.split('.').pop()) > -1));
+      });
   } catch (e) {
     return res.json({
       success: false,
-      error: 'The directory ' + req.params.path + ' doesn\'t exist'
+      error: util.format('The directory %s doesn\'t exist', req.params.path)
     });
   }
 
-  res.json({
-    success: true,
-    files: files
-  });
+  res.json({ success: true, files: files });
 });
 
 app.listen(process.env.PORT || 5000);
