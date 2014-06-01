@@ -9,17 +9,17 @@ var
 
 app.use(express.static(__dirname + APP_URL));
 
-app.get(API_URL, function(req, res, next) {
+app.get(API_URL, function(req, res) {
   res.json({});
 });
 
-app.get(API_URL + '/files', function(req, res, next) {
+app.get(API_URL + '/files', function(req, res) {
   var files = fs.readdirSync('.' + VIDEOS_URL);
 
   res.json({ success: true, files: files });
 });
 
-app.get(API_URL + '/files/:path', function(req, res, next) {
+app.get(API_URL + '/files/:path', function(req, res) {
   var
     path = req.params.path,
     files = [],
@@ -42,7 +42,7 @@ app.get(API_URL + '/files/:path', function(req, res, next) {
         };
       })
       .filter(function (file) {
-        var acceptedExtensions = ['mp4', 'ogv', 'webm', 'avi', 'wmv'];
+        var acceptedExtensions = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'];
 
         return (
           file.name.charAt(0) !== '.' &&

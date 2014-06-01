@@ -2,14 +2,14 @@
    data-ng-href="#/path/{{ pathify(dir.path) }}">
   {{ dir.name }}
 </a>
-<ul data-ng-if="base[dir.name].files.length > 0">
-  <li data-ng-repeat="file in base[dir.name].files">
+<ul data-ng-if="tree[dir.name].files.length > 0">
+  <li data-ng-repeat="file in tree[dir.name].files">
     <a data-ng-href="{{ depathify(dir.path) }}/{{ file.name }}">
       {{ file.name }}
     </a>
   </li>
 </ul>
-<ul data-ng-repeat="dir in base[dir.name].dirs"
-    data-ng-init="base = base[$parent.dir.name]">
+<ul data-ng-repeat="dir in tree[dir.name].dirs"
+    data-ng-init="tree = tree[$parent.dir.name]">
   <li data-ng-include="'views/subtree.html'"></li>
 </ul>

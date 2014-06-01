@@ -16,6 +16,6 @@ angular
         controller: 'MainCtrl'
       });
   })
-  .constant('TREE_DEPTH', -2)
+  .constant('TREE_DEPTH', 3)
   .constant('URL_API', 'api')
   .constant('URL_VIDEOS', 'videos');
