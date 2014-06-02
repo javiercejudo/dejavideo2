@@ -1,17 +1,16 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: TreeCtrl', function () {
 
   // load the controller's module
   beforeEach(module('dejavideo2App'));
 
-  var MainCtrl,
-    scope;
+  var MainCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
+    MainCtrl = $controller('TreeCtrl', {
       $scope: scope
     });
   }));
