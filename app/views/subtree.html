@@ -1,10 +1,10 @@
-<a data-ng-if="dir.path != pathBase"
-   data-ng-href="#/path/{{ pathify(dir.path) }}">
+<a data-ng-if="dir.path != treeScope.pathBase"
+   data-ng-href="#{{ constants.HASH_PREFIX }}/path/{{ dir.path | pathify }}">
   {{ dir.name }}
 </a>
 <ul data-ng-if="tree[dir.name].files.length > 0">
   <li data-ng-repeat="file in tree[dir.name].files">
-    <a data-ng-href="{{ depathify(dir.path) }}/{{ file.name }}">
+    <a data-ng-href="{{ dir.path | depathify }}/{{ file.name }}">
       {{ file.name }}
     </a>
   </li>

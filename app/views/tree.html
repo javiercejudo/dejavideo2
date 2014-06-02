@@ -1,5 +1,5 @@
-<div ng-init="dir = { name: folderName, path: pathBase }"
+<section ng-init="tree = treeScope.tree; dir = { name: treeScope.folderName, path: treeScope.pathBase }"
      data-ng-include="'views/subtree.html'">
-</div>
+</section>
 
 <!-- <pre>{{ stringify(tree) }}</pre> -->

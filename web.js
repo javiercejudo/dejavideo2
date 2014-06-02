@@ -1,57 +1,62 @@
 var
   fs = require('fs'),
   util = require('util'),
+  path = require('path'),
   express = require('express'),
   app = express(),
-  APP_URL = '/app',
-  API_URL = '/api',
-  VIDEOS_URL = APP_URL + '/videos';
+  APP_PATH = 'app',
+  URL_API = 'api';
 
-app.use(express.static(__dirname + APP_URL));
+app.use(express.static(path.join(__dirname, APP_PATH)));
 
-app.get(API_URL, function(req, res) {
-  res.json({});
-});
-
-app.get(API_URL + '/files', function(req, res) {
-  var files = fs.readdirSync('.' + VIDEOS_URL);
-
-  res.json({ success: true, files: files });
-});
-
-app.get(API_URL + '/files/:path', function(req, res) {
+app.get(path.join(path.sep, URL_API, 'files', ':path'), function(req, res) {
   var
-    path = req.params.path,
+    pathParam = req.params.path,
     files = [],
     dir;
 
-  if (path.indexOf('..') > -1) {
-    return res.json({ success: false, error: '../ is not allowed' });
+  if (pathParam.indexOf('..') > -1) {
+    return res.json({
+      success: false,
+      error: '.. is not allowed'
+    });
   }
 
-  dir = '.' + APP_URL  + '/' + req.params.path;
+  dir = '.' + path.join(path.sep, APP_PATH, pathParam);
 
   try {
     files = fs.readdirSync(dir)
-      .map(function(name) {
-        var stats = fs.statSync(dir + '/' + name);
+      .map(function(fileName) {
+        var stats = fs.statSync(path.join(dir, fileName));
 
         return {
-          name: name,
-          isDir: stats.isDirectory()
+          name : fileName,
+          isDir: stats.isDirectory(),
+          size : stats.size,
+          mtime: stats.mtime
         };
       })
       .filter(function (file) {
-        var acceptedExtensions = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'];
+        var
+          acceptedExtensions = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'],
+          isEmptyDir = true,
+          isAcceptedFile = false;
 
-        return (
-          file.name.charAt(0) !== '.' &&
-          (file.isDir || acceptedExtensions.indexOf(file.name.split('.').pop()) > -1));
+        if (!file.isDir) {
+          isAcceptedFile = (acceptedExtensions.indexOf(file.name.split('.').pop()) > -1);
+        } else if (file.name.charAt(0) !== '.') {
+          subfiles = fs.readdirSync(path.join(dir, file.name));
+          isEmptyDir = (subfiles.length === 0);
+        }
+
+        return (isAcceptedFile || !isEmptyDir);
       });
   } catch (e) {
+    console.log(e);
+
     return res.json({
       success: false,
-      error: util.format('The directory %s doesn\'t exist', req.params.path)
+      error: util.format('The directory %s could not be loaded.', pathParam)
     });
   }
 
