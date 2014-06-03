@@ -1,5 +1,4 @@
 var
-  fs = require('fs'),
   util = require('util'),
   path = require('path'),
   express = require('express'),
