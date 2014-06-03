@@ -1,3 +1,5 @@
+'use strict';
+
 var
   util = require('util'),
   path = require('path'),
@@ -14,8 +16,8 @@ app.get(path.join(path.sep, URL_API, 'files', ':path'), function(req, res) {
   var
     pathParam = req.params.path,
     files,
-    dir,
-    error;
+    error,
+    dir;
 
   if (pathParam.indexOf('..') > -1) {
     return djvUtil.errorResponse(res, '.. is not allowed.');

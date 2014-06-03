@@ -1,3 +1,5 @@
+'use strict';
+
 var
   fs = require('fs'),
   path = require('path'),
@@ -18,7 +20,7 @@ exports.getFiles = function (dir) {
   files = privateAPI.filterUnwantedFiles(dir, files);
 
   return files;
-}
+};
 
 /**
  * Attaches file info for an array of given files in a given directory
@@ -52,7 +54,7 @@ privateAPI.getFilesData = function (dir, files) {
  * @return {Array} Wanted files
  */
 privateAPI.filterUnwantedFiles = function (dir, files) {
-  var isEmptyDir, isAcceptedFile;
+  var isEmptyDir, isAcceptedFile, subfiles;
 
   return files.filter(function (file) {
     isEmptyDir = true;
