@@ -26,6 +26,6 @@ and smartphones.
 
 ## How to install
 
-Copy the application on a folder on your web root and put your videos
-inside an `app/videos` folder (alternatively, you can create a symlink to any
-folder on your system), organised in subfolders or however you prefer.
+Copy the application on a folder on your web root and put your videos inside
+a `videos` folder. Alternatively, you can simply create a symlink to any
+folder on your system.
