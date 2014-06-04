@@ -8,9 +8,8 @@ var
   djvUtil = require('./api/util'),
   app = express(),
   APP_PATH = (process.env.ENV === 'dev') ? 'app' : 'dist',
+  VIDEOS_PATH = 'videos',
   URL_API = 'api';
-
-app.use(express.static(path.join(__dirname, APP_PATH)));
 
 app.get(path.join(path.sep, URL_API, 'files', ':path'), function(req, res) {
   var
@@ -35,5 +34,8 @@ app.get(path.join(path.sep, URL_API, 'files', ':path'), function(req, res) {
 
   res.json({ success: true, files: files });
 });
+
+app.use(path.join(path.sep, VIDEOS_PATH), express.static(path.join(__dirname, VIDEOS_PATH)));
+app.use(express.static(path.join(__dirname, APP_PATH)));
 
 app.listen(process.env.PORT || 5000);

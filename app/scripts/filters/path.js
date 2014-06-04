@@ -16,12 +16,12 @@ angular.module('dejavideo.filters.path', [])
 
   .filter('pathify', function () {
     return function (uri) {
-      return uri.replace(/\%2F/g, '>');
+      return uri.replace(/\//g, '>');
     };
   })
 
   .filter('depathify', function () {
     return function (uri) {
-      return uri.replace(/>/g, '%2F');
+      return uri.replace(/>/g, '/');
     };
   });

@@ -27,9 +27,9 @@ angular.module('dejavideo2App')
         return;
       }
 
-      var folderName = path.split('%2F').pop();
+      var folderName = path.split('/').pop();
 
-      $http.get(treeScope.reqBase + '/' +  path, { cache: true })
+      $http.get(treeScope.reqBase + '/' +  $filter('encodeURI')(path), { cache: true })
         .success(function (data) {
           if (!data.success) {
             $log.log(data.error);
@@ -46,10 +46,14 @@ angular.module('dejavideo2App')
 
           angular.forEach(data.files, function (file) {
             if (file.isDir) {
-              file.path = path + '%2F' + file.name;
+              file.path = path + '/' + file.name;
               parent[folderName].dirs.push(file);
 
-              treeScope.loadFiles(path + '%2F' + file.name, parent[folderName], currDepth + 1);
+              treeScope.loadFiles(
+                path + '/' + file.name,
+                parent[folderName],
+                currDepth + 1
+              );
             } else {
               parent[folderName].files.push(file);
             }
