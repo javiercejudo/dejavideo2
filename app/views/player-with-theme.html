@@ -1,0 +1,30 @@
+<videogular vg-autohide-cursor="{{ player.config.autohideCursor.enabled }}"
+            vg-autohide-cursor-time="{{ player.config.autohideCursor.time }}"
+            vg-autohide-cursor-target="overlayPlayContainer"
+            vg-stretch="player.config.stretch"
+            vg-autoplay="player.config.autoPlay"
+            vg-theme="player.config.theme.url">
+    <video class="videoPlayer" preload="auto">
+        <source ng-src="{{ player.video.src }}" type="{{ player.video.type }}">
+    </video>
+    <vg-overlay-play vg-play-icon="config.theme.playIcon">
+      <div vg-autohide-cursor="{{ player.config.autohideCursor.enabled }}"
+           vg-autohide-cursor-time="{{ player.config.autohideCursor.time }}"
+           class="overlayPlayContainer">
+        <div class="iconButton ng-binding">&#xe000;</div>
+      </div>
+    </vg-overlay-play>
+    <vg-controls vg-autohide="player.config.autoHide" vg-autohide-time="player.config.autoHideTime" style="height: 50px;">
+        <vg-play-pause-button></vg-play-pause-button>
+        <vg-timeDisplay>{{ currentTime }}</vg-timeDisplay>
+        <vg-scrubBar>
+            <vg-scrubbarcurrenttime></vg-scrubbarcurrenttime>
+        </vg-scrubBar>
+        <vg-timeDisplay>{{ totalTime }}</vg-timeDisplay>
+        <vg-volume>
+            <vg-mutebutton></vg-mutebutton>
+            <vg-volumebar></vg-volumebar>
+        </vg-volume>
+        <vg-fullscreenButton></vg-fullscreenButton>
+    </vg-controls>
+</videogular>

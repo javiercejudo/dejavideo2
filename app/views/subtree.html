@@ -1,15 +1,20 @@
 <a data-ng-if="dir.path != treeScope.pathBase"
-   data-ng-href="#{{ constants.HASH_PREFIX }}/path/{{ dir.path | pathify }}">
+   data-ng-href="path/{{ dir.path | pathify }}">
   {{ dir.name }}
 </a>
 <ul data-ng-if="tree[dir.name].files.length > 0">
   <li data-ng-repeat="file in tree[dir.name].files">
-    <a data-ng-href="{{ dir.path | depathify }}/{{ file.name }}">
+    <a target="_self" data-ng-href="{{ dir.path | depathify }}/{{ file.name }}">[▼]</a>
+    <a data-ng-href="player/{{ dir.path | pathify }}{{ constants.PATHIFY_SEPARATOR }}{{ file.name }}">
       {{ file.name }}
     </a>
+    <br>
+    {{ file.size | filesize:0:'MiB' }}
+    -
+    <span am-time-ago="file.mtime"></span>
   </li>
 </ul>
 <ul data-ng-repeat="dir in tree[dir.name].dirs"
     data-ng-init="tree = tree[$parent.dir.name]">
-  <li data-ng-include="'views/subtree.html'"></li>
+  <li data-ng-include="'/views/subtree.html'"></li>
 </ul>

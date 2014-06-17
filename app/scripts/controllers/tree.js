@@ -2,19 +2,21 @@
 
 angular.module('dejavideo2App')
 
-  .controller('TreeCtrl', function ($scope, $http, $timeout, $log, $filter, $routeParams, TREE_DEPTH, URL_API, URL_VIDEOS) {
+  .controller('TreeCtrl', function ($scope, $http, $timeout, $log, $filter, $routeParams, TREE_DEPTH, URL_API, URL_VIDEOS, PATHIFY_SEPARATOR) {
     $scope.treeScope = {
       tree: {},
       reqBase: '/' + URL_API + '/files',
       pathBase: URL_VIDEOS,
-      folderName: URL_VIDEOS
+      folderName: URL_VIDEOS,
+      dirBase: { name: URL_VIDEOS, path: URL_VIDEOS }
     };
 
     var treeScope = $scope.treeScope;
 
     if ($routeParams.path) {
       treeScope.pathBase = $routeParams.path;
-      treeScope.folderName = treeScope.pathBase.split('>').pop();
+      treeScope.folderName = treeScope.pathBase.split(PATHIFY_SEPARATOR).pop();
+      treeScope.dirBase = { name: treeScope.folderName, path: treeScope.pathBase };
     }
 
     treeScope.loadFiles = function (path, parent, currDepth) {
@@ -29,7 +31,7 @@ angular.module('dejavideo2App')
 
       var folderName = path.split('/').pop();
 
-      $http.get(treeScope.reqBase + '/' +  $filter('encodeURI')(path), { cache: true })
+      $http.get(treeScope.reqBase + '/' +  encodeURIComponent(path), { cache: true })
         .success(function (data) {
           if (!data.success) {
             $log.log(data.error);
@@ -50,7 +52,7 @@ angular.module('dejavideo2App')
               parent[folderName].dirs.push(file);
 
               treeScope.loadFiles(
-                path + '/' + file.name,
+                file.path,
                 parent[folderName],
                 currDepth + 1
               );

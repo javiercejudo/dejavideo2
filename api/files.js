@@ -3,21 +3,21 @@
 var
   fs = require('fs'),
   path = require('path'),
-  acceptedExtensions = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'],
   privateAPI = {};
 
 /**
  * Returns wanted files from a given directory
  *
- * @param {String} dir Directory to retrieve files from
+ * @param {String} dir                Directory to retrieve files from
+ * @param {Array}  acceptedExtensions List of accepted file extensions
  *
  * @return {Array} Array of wanted files
  */
-exports.getFiles = function (dir) {
+exports.getFiles = function (dir, acceptedExtensions) {
   var files = fs.readdirSync(dir);
 
   files = privateAPI.getFilesData(dir, files);
-  files = privateAPI.filterUnwantedFiles(dir, files);
+  files = privateAPI.filterUnwantedFiles(dir, files, acceptedExtensions);
 
   return files;
 };
@@ -48,12 +48,13 @@ privateAPI.getFilesData = function (dir, files) {
 /**
  * Filters out unwanted files from a given array of files
  *
- * @param {String} dir   Directory of the given arrays
- * @param {Array}  files Files to run filtering on
+ * @param {String} dir                Directory of the given arrays
+ * @param {Array}  files              Files to run filtering on
+ * @param {Array}  acceptedExtensions List of accepted file extensions
  *
  * @return {Array} Wanted files
  */
-privateAPI.filterUnwantedFiles = function (dir, files) {
+privateAPI.filterUnwantedFiles = function (dir, files, acceptedExtensions) {
   var isEmptyDir, isAcceptedFile, subfiles;
 
   return files.filter(function (file) {

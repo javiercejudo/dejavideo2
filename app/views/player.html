@@ -1,0 +1,8 @@
+<videogular vg-autohide-cursor="{{ player.config.autohideCursor.enabled }}"
+            vg-autohide-cursor-time="{{ player.config.autohideCursor.time }}"
+            vg-stretch="player.config.stretch"
+            vg-autoplay="player.config.autoPlay">
+    <video class="videoPlayer" controls preload="auto">
+        <source ng-src="{{ player.video.src }}" type="{{ player.video.type }}">
+    </video>
+</videogular>

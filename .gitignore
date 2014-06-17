@@ -3,4 +3,5 @@ dist
 .tmp
 .env
 app/bower_components
+app/config/redirections.json
 videos
