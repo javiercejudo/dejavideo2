@@ -48,5 +48,5 @@ angular.module('dejavideo.filters.numbers', [])
       }
 
       return result + ' ' + units[factor];
-    }
+    };
   });

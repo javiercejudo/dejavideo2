@@ -1,7 +1,6 @@
 'use strict';
 
 var
-  util = require('util'),
   path = require('path'),
   express = require('express'),
   djvApi = require('./api/dejavideo'),
