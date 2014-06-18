@@ -9,13 +9,13 @@ var
   VIDEOS_PATH = 'videos',
   URL_API = 'api';
 
-app.get(path.join('/', URL_API, 'files', ':path'), djvApi.getFiles);
+app.get('/' + URL_API +'/files/:path', djvApi.getFiles);
 
-app.use(path.join('/', VIDEOS_PATH), express.static(path.join(__dirname, VIDEOS_PATH)));
+app.use('/' + VIDEOS_PATH, express.static(path.join(__dirname, VIDEOS_PATH)));
 app.use(express.static(path.join(__dirname, APP_PATH)));
 
-app.use('*', function(req, res) {
-  res.sendfile('app/index.html');
+app.use(function(req, res) {
+  res.sendfile(path.join(APP_PATH, 'index.html'));
 });
 
 app.listen(process.env.PORT || 5000);
