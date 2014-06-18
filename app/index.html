@@ -46,6 +46,7 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -63,8 +64,10 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/dejavideoApp.js"></script>
+    <script src="scripts/services/browser.js"></script>
     <script src="scripts/filters/path.js"></script>
     <script src="scripts/filters/numbers.js"></script>
+    <script src="scripts/filters/aye.js"></script>
     <script src="scripts/controllers/base.js"></script>
     <script src="scripts/controllers/tree.js"></script>
     <script src="scripts/controllers/player.js"></script>

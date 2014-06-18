@@ -5,8 +5,7 @@ var
   util = require('util'),
   djvFiles = require('./files'),
   djvUtil = require('./util'),
-  // ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv']
-  acceptedExtensions = ['mp4'];
+  acceptedExtensions = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'];
 
 /**
  * Array of accepted file extensions

@@ -1,20 +1,20 @@
-<a data-ng-if="dir.path != treeScope.pathBase"
-   data-ng-href="path/{{ dir.path | pathify }}">
-  {{ dir.name }}
+<a ng-if="dir.path != treeScope.pathBase"
+   ng-href="path/{{ dir.path | pathify }}">
+  {{ dir.name | aye }}
 </a>
-<ul data-ng-if="tree[dir.name].files.length > 0">
-  <li data-ng-repeat="file in tree[dir.name].files">
-    <a target="_self" data-ng-href="{{ dir.path | depathify }}/{{ file.name }}">[▼]</a>
-    <a data-ng-href="player/{{ dir.path | pathify }}{{ constants.PATHIFY_SEPARATOR }}{{ file.name }}">
-      {{ file.name }}
-    </a>
+<ul ng-if="tree[dir.name].files.length > 0">
+  <li ng-repeat="file in tree[dir.name].files"
+      ng-class="{ 'unsupported' : !djvBrowser.isVideoSupported(file.name) }">
+    <a target="_self" ng-href="{{ dir.path | depathify }}/{{ file.name }}">[▼]</a>
+    <a ng-href="player/{{ dir.path | pathify }}{{ constants.PATHIFY_SEPARATOR }}{{ file.name }}">
+       {{ file.name | aye }}</a>
     <br>
     {{ file.size | filesize:0:'MiB' }}
     -
     <span am-time-ago="file.mtime"></span>
   </li>
 </ul>
-<ul data-ng-repeat="dir in tree[dir.name].dirs"
-    data-ng-init="tree = tree[$parent.dir.name]">
-  <li data-ng-include="'/views/subtree.html'"></li>
+<ul ng-repeat="dir in tree[dir.name].dirs"
+    ng-init="tree = tree[$parent.dir.name]">
+  <li ng-include="'/views/subtree.html'"></li>
 </ul>

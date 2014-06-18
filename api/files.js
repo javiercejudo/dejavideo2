@@ -62,7 +62,11 @@ privateAPI.filterUnwantedFiles = function (dir, files, acceptedExtensions) {
     isAcceptedFile = false;
 
     if (!file.isDir) {
-      isAcceptedFile = (acceptedExtensions.indexOf(file.name.split('.').pop()) > -1);
+      if (acceptedExtensions.length > 0) {
+        isAcceptedFile = (acceptedExtensions.indexOf(file.name.split('.').pop()) > -1);
+      } else {
+        isAcceptedFile = true;
+      }
     } else if (file.name.charAt(0) !== '.') {
       subfiles = fs.readdirSync(path.join(dir, file.name));
       isEmptyDir = (subfiles.length === 0);

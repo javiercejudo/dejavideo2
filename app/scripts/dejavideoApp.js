@@ -9,11 +9,13 @@ angular
     'com.2fdevs.videogular.plugins.controls',
     'com.2fdevs.videogular.plugins.overlayplay',
     'com.javiercejudo.videogular.plugins.autohide-cursor',
+    'dejavideo.services.browser',
     'dejavideo.filters.path',
-    'dejavideo.filters.numbers'
+    'dejavideo.filters.numbers',
+    'dejavideo.filters.aye'
   ])
 
-  .constant('TREE_DEPTH', 2)
+  .constant('TREE_DEPTH', -2)
   .constant('URL_API', 'api')
   .constant('URL_VIDEOS', 'videos')
   .constant('HASH_PREFIX', '!')
@@ -34,7 +36,7 @@ angular
         redirectTo: '/'
       })
       .when('/player/:video', {
-        templateUrl: '/views/player-with-theme.html',
+        templateUrl: '/views/player.html',
         controller: 'PlayerCtrl'
       });
   })
@@ -90,8 +92,8 @@ angular
 
       $rootScope.isPlayerOn = ($rootScope.path.indexOf('/player') === 0);
     });
+  })
 
-    $rootScope.$on('$viewContentLoaded', function() {
-      $templateCache.removeAll();
-    });
+  .run(function($rootScope, djvBrowser) {
+    $rootScope.djvBrowser = djvBrowser;
   });
