@@ -15,7 +15,7 @@ angular
     'dejavideo.filters.aye'
   ])
 
-  .constant('TREE_DEPTH', -2)
+  .constant('TREE_DEPTH', 2)
   .constant('URL_API', 'api')
   .constant('URL_VIDEOS', 'videos')
   .constant('HASH_PREFIX', '!')

@@ -1,13 +1,3 @@
-/*global angular:true, browser:true, window:true, localStorage:true */
-
-/**
- * Browser module
- *
- * Defines a znBrowser service for feature detection
- *
- * @copyright Copyright (c) 2011 Zanui (http://www.zanui.com.au)
- */
-
 'use strict';
 
 angular.module('dejavideo.services.browser', []).factory('djvBrowser', function () {
@@ -19,9 +9,10 @@ angular.module('dejavideo.services.browser', []).factory('djvBrowser', function 
     return (
       ext === 'mp4'  && Modernizr.video.h264 !== '' ||
       ext === 'webm' && Modernizr.video.webm !== '' ||
-      ext === 'ogg'  && Modernizr.video.ogg  !== ''
+      ext === 'ogg'  && Modernizr.video.ogg  !== '' ||
+      ext === 'ogv'  && Modernizr.video.ogg  !== ''
     );
   };
 
-    return publicAPI;
+  return publicAPI;
 });

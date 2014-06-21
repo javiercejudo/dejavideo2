@@ -5,14 +5,18 @@ var
   util = require('util'),
   djvFiles = require('./files'),
   djvUtil = require('./util'),
-  acceptedExtensions = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'];
+  ACCEPTED_EXTENSIONS = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'],
+  VIDEOS_PATH = 'videos',
+  privateAPI = {};
+
+exports.VIDEOS_PATH = VIDEOS_PATH;
 
 /**
  * Array of accepted file extensions
  *
  * @type {Array}
  */
-exports.acceptedExtensions = acceptedExtensions;
+exports.ACCEPTED_EXTENSIONS = ACCEPTED_EXTENSIONS;
 
 /**
  * Returns wanted files from a given path
@@ -29,19 +33,33 @@ exports.getFiles = function(req, res) {
     error,
     dir;
 
-  if (pathParam.indexOf('..') > -1 || pathParam.indexOf('/') === 0) {
-    return djvUtil.errorResponse(res, 'Forbidden.');
+  if (privateAPI.isForbiddenPath(pathParam)) {
+    return djvUtil.koResponse(res, 'Forbidden.');
   }
 
   dir = '.' + path.join(path.sep, pathParam);
 
   try {
-    files = djvFiles.getFiles(dir, acceptedExtensions);
+    files = djvFiles.getFiles(dir, ACCEPTED_EXTENSIONS);
   } catch (e) {
     error = util.format('The directory %s could not be loaded.', pathParam);
 
-    return djvUtil.errorResponse(res, error);
+    return djvUtil.koResponse(res, error);
   }
 
-  return res.json({ success: true, files: files });
+  return djvUtil.okResponse(res, { files: files });
 };
+
+/**
+ * Returns true if a path is forbidden and false otherwise
+ *
+ * @param {String} pathParam
+ *
+ * @return {Boolean}
+ */
+privateAPI.isForbiddenPath = function (pathParam) {
+  return (
+    pathParam.indexOf('..') > -1 ||
+    pathParam.split(path.sep).shift() !== VIDEOS_PATH
+  );
+}

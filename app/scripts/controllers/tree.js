@@ -32,9 +32,9 @@ angular.module('dejavideo2App')
       var folderName = path.split('/').pop();
 
       $http.get(treeScope.reqBase + '/' +  encodeURIComponent(path), { cache: true })
-        .success(function (data) {
-          if (!data.success) {
-            $log.log(data.error);
+        .success(function (response) {
+          if (!response.success) {
+            $log.log(response.error);
 
             return;
           }
@@ -46,7 +46,7 @@ angular.module('dejavideo2App')
           parent[folderName].files = [];
           parent[folderName].dirs = [];
 
-          angular.forEach(data.files, function (file) {
+          angular.forEach(response.content.files, function (file) {
             if (file.isDir) {
               file.path = path + '/' + file.name;
               parent[folderName].dirs.push(file);

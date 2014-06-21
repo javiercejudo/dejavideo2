@@ -17,7 +17,7 @@ exports.getFiles = function (dir, acceptedExtensions) {
   var files = fs.readdirSync(dir);
 
   files = privateAPI.getFilesData(dir, files);
-  files = privateAPI.filterUnwantedFiles(dir, files, acceptedExtensions);
+  files = privateAPI.filterFiles(dir, files, acceptedExtensions);
 
   return files;
 };
@@ -54,24 +54,49 @@ privateAPI.getFilesData = function (dir, files) {
  *
  * @return {Array} Wanted files
  */
-privateAPI.filterUnwantedFiles = function (dir, files, acceptedExtensions) {
-  var isEmptyDir, isAcceptedFile, subfiles;
-
+privateAPI.filterFiles = function (dir, files, acceptedExtensions) {
   return files.filter(function (file) {
-    isEmptyDir = true;
-    isAcceptedFile = false;
+    return privateAPI.isRelevantFile(dir, file, acceptedExtensions);
+  });
+};
 
-    if (!file.isDir) {
-      if (acceptedExtensions.length > 0) {
-        isAcceptedFile = (acceptedExtensions.indexOf(file.name.split('.').pop()) > -1);
-      } else {
-        isAcceptedFile = true;
-      }
-    } else if (file.name.charAt(0) !== '.') {
-      subfiles = fs.readdirSync(path.join(dir, file.name));
-      isEmptyDir = (subfiles.length === 0);
+/**
+ * Determines whether a directory contains relevant files or not
+ *
+ * @param {String} dir                Directory of the given arrays
+ * @param {Array}  acceptedExtensions List of accepted file extensions
+ *
+ * @return {Boolean}
+ */
+privateAPI.containsRelevantFiles = function (dir, acceptedExtensions) {
+  var files = fs.readdirSync(dir);
+
+  files = privateAPI.getFilesData(dir, files);
+
+  return files.some(function (file) {
+    return privateAPI.isRelevantFile(dir, file, acceptedExtensions);
+  });
+};
+
+/**
+ * Determines whether a file (dir or otherwise) is relevant or not
+ *
+ * @param {String} dir                Directory of the given arrays
+ * @param {Array}  files              Files to run filtering on
+ * @param {Array}  acceptedExtensions List of accepted file extensions
+ *
+ * @return {Boolean}
+ */
+privateAPI.isRelevantFile = function (dir, file, acceptedExtensions) {
+  if (!file.isDir) {
+    if (acceptedExtensions.length > 0) {
+      return (acceptedExtensions.indexOf(file.name.split('.').pop()) > -1);
     }
 
-    return (isAcceptedFile || !isEmptyDir);
-  });
+    return true;
+  } else if (file.name.charAt(0) !== '.') {
+    return privateAPI.containsRelevantFiles(path.join(dir, file.name), acceptedExtensions);
+  }
+
+  return false;
 };
