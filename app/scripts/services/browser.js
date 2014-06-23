@@ -1,3 +1,5 @@
+/*global Modernizr */
+
 'use strict';
 
 angular.module('dejavideo.services.browser', []).factory('djvBrowser', function () {
