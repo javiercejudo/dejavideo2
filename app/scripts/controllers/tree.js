@@ -2,7 +2,7 @@
 
 angular.module('dejavideo2App')
 
-  .controller('TreeCtrl', function ($scope, $http, $timeout, $log, $filter, $routeParams, TREE_DEPTH, URL_API, URL_VIDEOS, PATHIFY_SEPARATOR) {
+  .controller('TreeCtrl', function ($scope, $http, $timeout, $log, $filter, $routeParams, TREE_DEPTH, URL_API, URL_VIDEOS) {
     $scope.treeScope = {
       tree: {},
       pathBase: URL_VIDEOS,

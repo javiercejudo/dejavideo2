@@ -11,7 +11,7 @@ var
   privateAPI = {};
 
 /**
- * Location to the directory containing the videos
+ * Location of the directory containing the videos
  *
  * @type {String}
  */

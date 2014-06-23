@@ -32,9 +32,7 @@ exports.getFiles = function (dir, acceptedExtensions) {
  * @return {Array} Recent files
  */
 exports.getRecentFiles = function (dir, acceptedExtensions, maxCount) {
-  var
-    recentFiles = [],
-    files = [];
+  var files;
 
   files = privateAPI.getDirFilesOnly(dir, true);
   files = privateAPI.filterFiles(dir, files, acceptedExtensions);
@@ -148,8 +146,7 @@ privateAPI.getDirFilesOnly = function (dir, recursive) {
   var
     files = [],
     subfiles = [],
-    subdirs = [],
-    stats;
+    subdirs = [];
 
   files = fs.readdirSync(dir);
   files = privateAPI.getFilesData(dir, files);

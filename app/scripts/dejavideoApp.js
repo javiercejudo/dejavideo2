@@ -30,7 +30,7 @@ angular
       })
       .when('/path/:path', {
         templateUrl: '/views/tree.html',
-        controller: 'TreeCtrl as tree'
+        controller: 'TreeCtrl'
       })
       .when('/player', {
         redirectTo: '/'
