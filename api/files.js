@@ -11,7 +11,7 @@ var
  * @param {String} dir                Directory to retrieve files from
  * @param {Array}  acceptedExtensions List of accepted file extensions
  *
- * @return {Array} Array of wanted files
+ * @return {Array} Wanted files
  */
 exports.getFiles = function (dir, acceptedExtensions) {
   var files = fs.readdirSync(dir);
@@ -20,6 +20,36 @@ exports.getFiles = function (dir, acceptedExtensions) {
   files = privateAPI.filterFiles(dir, files, acceptedExtensions);
 
   return files;
+};
+
+/**
+ * Returns recent files from a given directory
+ *
+ * @param {String} dir                Directory to retrieve files from
+ * @param {Array}  acceptedExtensions List of accepted file extensions
+ * @param {Number} maxCount           Maximum number of files to return
+ *
+ * @return {Array} Recent files
+ */
+exports.getRecentFiles = function (dir, acceptedExtensions, maxCount) {
+  var files;
+
+  files = privateAPI.getDirFilesOnly(dir, true);
+  files = privateAPI.filterFiles(dir, files, acceptedExtensions);
+
+  files.sort(function (fileA, fileB) {
+    if (fileA.mtime > fileB.mtime) {
+      return -1;
+    }
+
+    if (fileA.mtime < fileB.mtime) {
+      return 1;
+    }
+
+    return 0;
+  });
+
+  return files.slice(0, maxCount);
 };
 
 /**
@@ -40,7 +70,8 @@ privateAPI.getFilesData = function (dir, files) {
       name : fileName,
       isDir: stats.isDirectory(),
       size : stats.size,
-      mtime: stats.mtime
+      mtime: stats.mtime,
+      path : dir
     };
   });
 };
@@ -94,9 +125,49 @@ privateAPI.isRelevantFile = function (dir, file, acceptedExtensions) {
     }
 
     return true;
-  } else if (file.name.charAt(0) !== '.') {
+  }
+
+  if (file.name.charAt(0) !== '.') {
     return privateAPI.containsRelevantFiles(path.join(dir, file.name), acceptedExtensions);
   }
 
   return false;
+};
+
+/**
+ * Returns files only (not dirs) from a given folder
+ *
+ * @param {String}   dir       Directory of the given arrays
+ * @param {Boolean}  recursive Whether dirs should be recursively scanned
+ *
+ * @return {Array} Files under dir
+ */
+privateAPI.getDirFilesOnly = function (dir, recursive) {
+  var
+    files = [],
+    subfiles = [],
+    subdirs = [];
+
+  files = fs.readdirSync(dir);
+  files = privateAPI.getFilesData(dir, files);
+
+  files = files.filter(function (file) {
+    if (file.isDir && file.name.charAt(0) !== '.') {
+      subdirs.push(file);
+    }
+
+    return !file.isDir;
+  });
+
+  if (!recursive) {
+    return files;
+  }
+
+  subdirs.forEach(function (subdir) {
+    subfiles = privateAPI.getDirFilesOnly(path.join(dir, subdir.name), true);
+
+    files = files.concat(subfiles);
+  });
+
+  return files;
 };

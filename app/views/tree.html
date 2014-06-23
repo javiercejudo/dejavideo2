@@ -1,3 +1,20 @@
+<section ng-if="treeScope.recentFiles.length > 0">
+  <ul>
+    <li ng-repeat="file in treeScope.recentFiles"
+      ng-class="{ 'unsupported' : !djvBrowser.isVideoSupported(file.name) }">
+    <a target="_self" ng-href="{{ file.path | depathify }}/{{ file.name }}">[▼]</a>
+    <a ng-href="player/{{ file.path + '/' + file.name | pathify }}">
+       {{ file.name | aye }}</a>
+    <br>
+    {{ file.size | filesize:0:'MiB' }}
+    -
+    <span am-time-ago="file.mtime"></span>
+  </li>
+  </ul>
+</section>
+
+<hr>
+
 <section ng-init="tree = treeScope.tree; dir = treeScope.dirBase"
      data-ng-include="'views/subtree.html'">
 </section>

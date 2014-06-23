@@ -9,6 +9,7 @@ var
   URL_API = 'api';
 
 app.get('/' + URL_API +'/files/:path', djvApi.getFiles);
+app.get('/' + URL_API +'/new/:path', djvApi.getRecentFiles);
 
 app.use(
   '/' + djvApi.VIDEOS_PATH,

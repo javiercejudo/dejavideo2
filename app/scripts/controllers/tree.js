@@ -2,26 +2,25 @@
 
 angular.module('dejavideo2App')
 
-  .controller('TreeCtrl', function ($scope, $http, $timeout, $log, $filter, $routeParams, TREE_DEPTH, URL_API, URL_VIDEOS, PATHIFY_SEPARATOR) {
+  .controller('TreeCtrl', function ($scope, $http, $timeout, $log, $filter, $routeParams, TREE_DEPTH, URL_API, URL_VIDEOS) {
     $scope.treeScope = {
       tree: {},
-      reqBase: '/' + URL_API + '/files',
       pathBase: URL_VIDEOS,
       folderName: URL_VIDEOS,
-      dirBase: { name: URL_VIDEOS, path: URL_VIDEOS }
+      dirBase: { name: URL_VIDEOS, path: URL_VIDEOS },
+      recentFiles: []
     };
 
     var treeScope = $scope.treeScope;
 
     if ($routeParams.path) {
-      treeScope.pathBase = $routeParams.path;
-      treeScope.folderName = treeScope.pathBase.split(PATHIFY_SEPARATOR).pop();
+      treeScope.pathBase = $filter('depathify')($routeParams.path);
+      treeScope.folderName = treeScope.pathBase.split('/').pop();
       treeScope.dirBase = { name: treeScope.folderName, path: treeScope.pathBase };
     }
 
     treeScope.loadFiles = function (path, parent, currDepth) {
       path = path || treeScope.pathBase;
-      path = $filter('depathify')(path);
       parent = parent || treeScope.tree;
       currDepth = currDepth || 0;
 
@@ -31,7 +30,7 @@ angular.module('dejavideo2App')
 
       var folderName = path.split('/').pop();
 
-      $http.get(treeScope.reqBase + '/' +  encodeURIComponent(path), { cache: true })
+      $http.get('/' + URL_API + '/files/' +  encodeURIComponent(path), { cache: true })
         .success(function (response) {
           if (!response.success) {
             $log.log(response.error);
@@ -63,7 +62,7 @@ angular.module('dejavideo2App')
         })
         .error(function (data, status) {
           $log.log('-------------------------------');
-          $log.log('Some files could not be loaded:');
+          $log.log('The files could not be loaded:');
           $log.log('--> data', data);
           $log.log('--> status', status);
           $log.log('--> path', path);
@@ -72,5 +71,28 @@ angular.module('dejavideo2App')
         });
     };
 
+    treeScope.loadRecentFiles = function () {
+      var path = treeScope.pathBase;
+
+      $http.get('/' + URL_API + '/new/' +  encodeURIComponent(path), { cache: false })
+        .success(function (response) {
+          if (!response.success) {
+            $log.log(response.error);
+
+            return;
+          }
+
+          treeScope.recentFiles = response.content.files;
+        })
+        .error(function (data, status) {
+          $log.log('-------------------------------');
+          $log.log('Recent files could not be loaded:');
+          $log.log('--> data', data);
+          $log.log('--> status', status);
+          $log.log('--> path', path);
+        });
+    };
+
     treeScope.loadFiles();
+    treeScope.loadRecentFiles();
   });
