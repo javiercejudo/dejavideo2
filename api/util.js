@@ -1,5 +1,7 @@
 'use strict';
 
+var privateAPI = {};
+
 /**
  * Determines if a reference is defined.
  *
@@ -7,7 +9,7 @@
  *
  * @returns {boolean} True if `value` is defined.
  */
-var isDefined = function (value) {
+privateAPI.isDefined = function (value) {
   return typeof value !== 'undefined';
 };
 
@@ -18,16 +20,37 @@ var isDefined = function (value) {
  *
  * @returns {boolean} True if `value` is undefined.
  */
-var isUndefined = function (value) {
+privateAPI.isUndefined = function (value) {
   return typeof value === 'undefined';
 };
 
-
-exports.isDefined = isDefined;
-exports.isUndefined = isUndefined;
+/**
+ * Returns a response with a given status
+ *
+ * @param {Object} res     Response
+ * @param {Number} status  Status code for the response
+ * @param {Object} content Object to send in the response
+ *
+ * @return {Object} Response
+ */
+privateAPI.respond = function (res, status, content) {
+  return res.json(status, content);
+};
 
 /**
- * Returns details about a successful
+ * Returns a value if it is defined or a given default
+ *
+ * @param  {*} value        Value to test
+ * @param  {*} defaultValue Default in case `value` is undefined
+ *
+ * @return {*}
+ */
+privateAPI.valueOrDefault = function (value, defaultValue) {
+  return (privateAPI.isDefined(value)) ? value : defaultValue;
+};
+
+/**
+ * Returns details about a successful response
  *
  * @param {Object} res     Response
  * @param {String} content Expected content
@@ -35,14 +58,13 @@ exports.isUndefined = isUndefined;
  * @return {Object} JSON response
  */
 exports.okResponse = function (res, content, status) {
-  if (isUndefined(status)) {
-    status = 200;
-  }
+  status = privateAPI.valueOrDefault(status, 200);
 
-  return res.json(status, {
-    success: true,
-    content: content
-  });
+  return privateAPI.respond(
+    res,
+    status,
+    { success: true, content: content }
+  );
 };
 
 /**
@@ -55,12 +77,15 @@ exports.okResponse = function (res, content, status) {
  * @return {Object} JSON response
  */
 exports.koResponse = function (res, message, status) {
-  if (isUndefined(status)) {
-    status = 500;
-  }
+  status = privateAPI.valueOrDefault(status, 500);
 
-  return res.json(status, {
-    success: false,
-    error: message
-  });
+  return privateAPI.respond(
+    res,
+    status,
+    { success: false, error: message }
+  );
 };
+
+exports.isDefined = privateAPI.isDefined;
+exports.isUndefined = privateAPI.isUndefined;
+exports.valueOrDefault = privateAPI.valueOrDefault;
