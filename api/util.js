@@ -58,11 +58,9 @@ privateAPI.valueOrDefault = function (value, defaultValue) {
  * @return {Object} JSON response
  */
 exports.okResponse = function (res, content, status) {
-  status = privateAPI.valueOrDefault(status, 200);
-
   return privateAPI.respond(
     res,
-    status,
+    privateAPI.valueOrDefault(status, 200),
     { success: true, content: content }
   );
 };
@@ -77,11 +75,9 @@ exports.okResponse = function (res, content, status) {
  * @return {Object} JSON response
  */
 exports.koResponse = function (res, message, status) {
-  status = privateAPI.valueOrDefault(status, 500);
-
   return privateAPI.respond(
     res,
-    status,
+    privateAPI.valueOrDefault(status, 500),
     { success: false, error: message }
   );
 };
