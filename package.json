@@ -3,8 +3,9 @@
   "version": "2.0.0",
   "description": "A simple video player with filesystem navigation",
   "dependencies": {
-    "logfmt": "^1.1.2",
-    "express": "^4.3.1"
+    "compression": "^1.0.8",
+    "express": "^4.3.1",
+    "logfmt": "^1.1.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

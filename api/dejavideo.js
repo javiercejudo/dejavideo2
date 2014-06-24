@@ -47,7 +47,7 @@ exports.getFiles = function(req, res) {
     dir;
 
   if (privateAPI.isForbiddenPath(pathParam)) {
-    return djvUtil.koResponse(res, 'Forbidden.');
+    return djvUtil.koResponse(res, 'Forbidden.', 403);
   }
 
   dir = '.' + path.join(path.sep, pathParam);
@@ -57,7 +57,7 @@ exports.getFiles = function(req, res) {
   } catch (e) {
     error = util.format('The directory %s could not be loaded.', pathParam);
 
-    return djvUtil.koResponse(res, error);
+    return djvUtil.koResponse(res, error, 500);
   }
 
   return djvUtil.okResponse(res, { files: files });
@@ -79,7 +79,7 @@ exports.getRecentFiles = function(req, res) {
     dir;
 
   if (privateAPI.isForbiddenPath(pathParam)) {
-    return djvUtil.koResponse(res, 'Forbidden.');
+    return djvUtil.koResponse(res, 'Forbidden.', 403);
   }
 
   dir = '.' + path.join(path.sep, pathParam);
@@ -89,7 +89,7 @@ exports.getRecentFiles = function(req, res) {
   } catch (e) {
     error = util.format('Recent files for directory %s could not be loaded.', pathParam);
 
-    return djvUtil.koResponse(res, error);
+    return djvUtil.koResponse(res, error, 500);
   }
 
   return djvUtil.okResponse(res, { files: files });

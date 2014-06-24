@@ -83,17 +83,8 @@ angular
     };
   })
 
-  .run(function($rootScope, $templateCache, $location) {
+  .run(function($rootScope, djvBrowser) {
     $rootScope.path = '';
     $rootScope.isPlayerOn = false;
-
-    $rootScope.$on('$routeChangeSuccess', function() {
-      $rootScope.path = $location.path();
-
-      $rootScope.isPlayerOn = ($rootScope.path.indexOf('/player') === 0);
-    });
-  })
-
-  .run(function($rootScope, djvBrowser) {
     $rootScope.djvBrowser = djvBrowser;
   });

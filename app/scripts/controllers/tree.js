@@ -74,7 +74,7 @@ angular.module('dejavideo2App')
     treeScope.loadRecentFiles = function () {
       var path = treeScope.pathBase;
 
-      $http.get('/' + URL_API + '/new/' +  encodeURIComponent(path), { cache: false })
+      $http.get('/' + URL_API + '/new/' +  encodeURIComponent(path), { cache: true })
         .success(function (response) {
           if (!response.success) {
             $log.log(response.error);
