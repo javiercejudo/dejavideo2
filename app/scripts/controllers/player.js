@@ -9,7 +9,7 @@ angular.module('dejavideo2App')
         type: 'video/mp4'
       },
       config: {
-        width: 853,
+        width: 854,
         height: 480,
         autoHide: true,
         autoHideTime: 1000,
@@ -18,8 +18,8 @@ angular.module('dejavideo2App')
           time: 1000
         },
         autoPlay: true,
-        stretch: 'fit',
-        responsive: true,
+        stretch: 'fit', // none, fit, fill
+        responsive: false,
         theme: {
           url: 'bower_components/videogular-themes-default/videogular.css',
           playIcon: '&#xe000;',

@@ -2,6 +2,8 @@
             vg-autohide-cursor-time="{{ player.config.autohideCursor.time }}"
             vg-autohide-cursor-target="overlayPlayContainer"
             vg-stretch="player.config.stretch"
+            vg-width="player.config.width"
+            vg-height="player.config.height"
             vg-autoplay="player.config.autoPlay"
             vg-theme="player.config.theme.url">
     <video class="videoPlayer" preload="auto">
@@ -20,7 +22,7 @@
         <vg-scrubBar>
             <vg-scrubbarcurrenttime></vg-scrubbarcurrenttime>
         </vg-scrubBar>
-        <vg-timeDisplay>{{ totalTime }}</vg-timeDisplay>
+        <vg-timeDisplay>{{ timeLeft }}</vg-timeDisplay>
         <vg-volume>
             <vg-mutebutton></vg-mutebutton>
             <vg-volumebar></vg-volumebar>
