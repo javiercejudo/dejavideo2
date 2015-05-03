@@ -22,7 +22,7 @@ app.use(
 app.use(express.static(path.join(__dirname, APP_PATH)));
 
 app.use(function(req, res) {
-  res.sendfile(path.join(APP_PATH, 'index.html'));
+  res.sendFile(path.join(__dirname, APP_PATH, 'index.html'));
 });
 
 app.listen(process.env.PORT || 5000);

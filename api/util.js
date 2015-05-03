@@ -34,7 +34,7 @@ privateAPI.isUndefined = function (value) {
  * @return {Object} Response
  */
 privateAPI.respond = function (res, status, content) {
-  return res.json(status, content);
+  return res.status(status).json(content);
 };
 
 /**
