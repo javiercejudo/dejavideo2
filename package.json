@@ -5,7 +5,8 @@
   "dependencies": {
     "compression": "^1.0.8",
     "express": "^4.3.1",
-    "logfmt": "^1.1.2"
+    "logfmt": "^1.1.2",
+    "video-extensions": "^1.0.0"
   },
   "devDependencies": {
     "bower": "^1.4.1",

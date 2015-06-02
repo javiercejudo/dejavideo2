@@ -5,7 +5,7 @@ var
   util = require('util'),
   djvFiles = require('./files'),
   djvUtil = require('./util'),
-  ACCEPTED_EXTENSIONS = ['mp4', 'mkv', 'ogv', 'ogg', 'webm', '3gp', 'avi', 'wmv'],
+  ACCEPTED_EXTENSIONS = require('video-extensions'),
   VIDEOS_PATH = 'videos',
   MAX_RECENT_FILES = 10,
   privateAPI = {};
